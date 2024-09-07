@@ -23,12 +23,23 @@ public class GetSecretHandler(
         var secret = await secretRepository.GetSecretAsync(request.Id);
         if (secret is null) return SecretErrors.SecretNotFound(request.Id);
 
+        if (IsSecretExpired(secret))
+        {
+            await secretRepository.DeleteSecretAsync(secret.Id);
+            return SecretErrors.SecretNotFound(secret.Id);
+        }
+
         if (!passwordEncryptor.Matches(secret.EncryptedContent, request.Password))
-            return SecretErrors.InvalidSecretPassword(request.Id);
+            return SecretErrors.InvalidSecretPassword(secret.Id);
 
         var content = passwordEncryptor.Decrypt(secret.EncryptedContent, request.Password);
-        await secretRepository.DeleteSecretAsync(request.Id);
+        await secretRepository.DeleteSecretAsync(secret.Id);
 
         return new SecretContentDto(content);
+    }
+
+    private bool IsSecretExpired(Secret secret)
+    {
+        return secret.CreationDate.AddDays(1) < DateTime.UtcNow;
     }
 }

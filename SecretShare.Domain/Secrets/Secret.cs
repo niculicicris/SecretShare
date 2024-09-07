@@ -6,5 +6,5 @@ public class Secret(Guid id, string encryptedContent)
 
     public string EncryptedContent { get; } = encryptedContent;
 
-    public DateTime CreationDate { get; } = DateTime.Now;
+    public DateTime CreationDate { get; } = DateTime.UtcNow;
 }
