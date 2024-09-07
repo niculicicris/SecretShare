@@ -1,16 +1,10 @@
 namespace SecretShare.Domain.Secrets;
 
-public class Secret
+public class Secret(Guid id, string encryptedContent)
 {
-    public Secret(Guid id, string encryptedContent)
-    {
-        Id = id;
-        EncryptedContent = encryptedContent;
-    }
+    public Guid Id { get; } = id;
 
-    public Guid Id { get; }
+    public string EncryptedContent { get; } = encryptedContent;
 
-    public string EncryptedContent { get; }
-
-    public DateTime CreationDate { get; private set; } = DateTime.Now;
+    public DateTime CreationDate { get; } = DateTime.Now;
 }

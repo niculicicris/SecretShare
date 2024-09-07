@@ -1,4 +1,4 @@
-using SecretShare.Application.Server.Errors;
+using SecretShare.Application.Server.Common.Errors;
 
 namespace SecretShare.Server.Extensions;
 

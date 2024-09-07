@@ -9,21 +9,14 @@ namespace SecretShare.Server.Controllers;
 
 [ApiController]
 [Route("secret/")]
-public class SecretController : ControllerBase
+public class SecretController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public SecretController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpPost]
     public async Task<IResult> CreateSecret([FromBody] SecretContentDto secretContent,
         CancellationToken cancellationToken)
     {
         var request = new CreateSecretRequest(secretContent.Content);
-        var response = await _mediator.Send(request, cancellationToken);
+        var response = await mediator.Send(request, cancellationToken);
 
         return response.Match(
             credentials => Results.Created("", credentials),
@@ -31,12 +24,12 @@ public class SecretController : ControllerBase
         );
     }
 
-    [HttpPost("{id}")]
+    [HttpPost("{id:guid}")]
     public async Task<IResult> GetSecret(Guid id, [FromBody] SecretPasswordDto secretPassword,
         CancellationToken cancellationToken)
     {
         var request = new GetSecretRequest(id, secretPassword.Password);
-        var response = await _mediator.Send(request, cancellationToken);
+        var response = await mediator.Send(request, cancellationToken);
 
         return response.Match(
             content => Results.Ok(content),

@@ -1,4 +1,4 @@
-using SecretShare.Application.Server.Extensions;
+using SecretShare.Application.Server.Common.Extensions;
 using SecretShare.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

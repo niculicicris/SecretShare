@@ -1,6 +1,6 @@
-using SecretShare.Application.Server.Errors;
+using SecretShare.Application.Server.Common.Errors;
 
-namespace SecretShare.Application.Server.Results;
+namespace SecretShare.Application.Server.Common.Results;
 
 public class Result<TValue>
 {

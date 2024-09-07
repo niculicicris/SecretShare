@@ -1,7 +1,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SecretShare.Application.Server.Extensions;
+namespace SecretShare.Application.Server.Common.Extensions;
 
 public static class DependencyInjection
 {

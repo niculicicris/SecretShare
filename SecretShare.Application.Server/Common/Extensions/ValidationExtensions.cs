@@ -1,7 +1,7 @@
 using FluentValidation.Results;
-using SecretShare.Application.Server.Errors;
+using SecretShare.Application.Server.Common.Errors;
 
-namespace SecretShare.Application.Server.Extensions;
+namespace SecretShare.Application.Server.Common.Extensions;
 
 public static class ValidationExtensions
 {

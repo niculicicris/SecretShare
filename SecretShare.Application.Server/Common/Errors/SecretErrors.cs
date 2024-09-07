@@ -1,4 +1,4 @@
-namespace SecretShare.Application.Server.Errors;
+namespace SecretShare.Application.Server.Common.Errors;
 
 public static class SecretErrors
 {
