@@ -1,9 +1,9 @@
 using System.Security.Cryptography;
-using SecretShare.Application.Server.Encryption;
+using SecretShare.Domain.Encryption;
 
 namespace SecretShare.Infrastructure.Encryption;
 
-public class PasswordEncryptor : IPasswordEncryptor
+public class EncryptionService : IEncryptionService
 {
     public string Encrypt(string value, string password)
     {

@@ -4,14 +4,14 @@ using SecretShare.Application.Server.Common.Extensions;
 using SecretShare.Application.Server.Common.Results;
 using SecretShare.Application.Server.Encryption;
 using SecretShare.Application.Shared.Secrets;
-using SecretShare.Domain.Secrets;
+using SecretShare.Domain.Secrets.Abstractions;
 
 namespace SecretShare.Application.Server.Secrets.CreateSecret;
 
 public class CreateSecretHandler(
     IValidator<CreateSecretRequest> validator,
-    IPasswordGenerator passwordGenerator,
-    IPasswordEncryptor passwordEncryptor,
+    IPasswordService passwordService,
+    ISecretService secretService,
     ISecretRepository secretRepository)
     : IRequestHandler<CreateSecretRequest, Result<SecretCredentialsDto>>
 {
@@ -21,9 +21,8 @@ public class CreateSecretHandler(
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid) return validationResult.ToError();
 
-        var password = passwordGenerator.GeneratePassword();
-        var encryptedContent = passwordEncryptor.Encrypt(request.Content, password);
-        var secret = new Secret(Guid.NewGuid(), encryptedContent);
+        var password = passwordService.GeneratePassword();
+        var secret = secretService.CreateSecret(request.Content, password);
 
         await secretRepository.InsertSecretAsync(secret);
 

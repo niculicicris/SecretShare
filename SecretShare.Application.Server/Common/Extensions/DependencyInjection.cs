@@ -1,5 +1,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using SecretShare.Domain.Secrets;
+using SecretShare.Domain.Secrets.Abstractions;
 
 namespace SecretShare.Application.Server.Common.Extensions;
 
@@ -9,6 +11,7 @@ public static class DependencyInjection
     {
         AddFluentValidation(services);
         AddMediatR(services);
+        AddServices(services);
 
         return services;
     }
@@ -24,5 +27,10 @@ public static class DependencyInjection
         {
             configuration.RegisterServicesFromAssembly(AssemblyReference.Assembly);
         });
+    }
+
+    private static void AddServices(IServiceCollection services)
+    {
+        services.AddSingleton<ISecretService, SecretService>();
     }
 }

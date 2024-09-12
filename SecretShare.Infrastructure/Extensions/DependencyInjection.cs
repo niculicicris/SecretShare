@@ -1,8 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using SecretShare.Application.Server.Encryption;
-using SecretShare.Domain.Secrets;
+using SecretShare.Domain.Encryption;
+using SecretShare.Domain.Secrets.Abstractions;
 using SecretShare.Infrastructure.Encryption;
-using SecretShare.Infrastructure.Repositories;
+using SecretShare.Infrastructure.Secrets;
 
 namespace SecretShare.Infrastructure.Extensions;
 
@@ -11,7 +12,7 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         AddRepositories(services);
-        AddCommon(services);
+        AddServices(services);
 
         return services;
     }
@@ -21,9 +22,9 @@ public static class DependencyInjection
         services.AddSingleton<ISecretRepository, InMemorySecretRepository>();
     }
 
-    private static void AddCommon(IServiceCollection services)
+    private static void AddServices(IServiceCollection services)
     {
-        services.AddSingleton<IPasswordGenerator, PasswordGenerator>();
-        services.AddSingleton<IPasswordEncryptor, PasswordEncryptor>();
+        services.AddSingleton<IPasswordService, PasswordService>();
+        services.AddSingleton<IEncryptionService, EncryptionService>();
     }
 }

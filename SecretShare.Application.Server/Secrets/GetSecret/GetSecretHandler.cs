@@ -3,16 +3,14 @@ using MediatR;
 using SecretShare.Application.Server.Common.Errors;
 using SecretShare.Application.Server.Common.Extensions;
 using SecretShare.Application.Server.Common.Results;
-using SecretShare.Application.Server.Encryption;
 using SecretShare.Application.Shared.Secrets;
-using SecretShare.Domain.Secrets;
+using SecretShare.Domain.Secrets.Abstractions;
 
 namespace SecretShare.Application.Server.Secrets.GetSecret;
 
 public class GetSecretHandler(
     IValidator<GetSecretRequest> validator,
-    IPasswordEncryptor passwordEncryptor,
-    ISecretRepository secretRepository)
+    ISecretService secretService)
     : IRequestHandler<GetSecretRequest, Result<SecretContentDto>>
 {
     public async Task<Result<SecretContentDto>> Handle(GetSecretRequest request, CancellationToken cancellationToken)
@@ -20,26 +18,9 @@ public class GetSecretHandler(
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid) return validationResult.ToError();
 
-        var secret = await secretRepository.GetSecretAsync(request.Id);
-        if (secret is null) return SecretErrors.SecretNotFound(request.Id);
-
-        if (IsSecretExpired(secret))
-        {
-            await secretRepository.DeleteSecretAsync(secret.Id);
-            return SecretErrors.SecretNotFound(secret.Id);
-        }
-
-        if (!passwordEncryptor.Matches(secret.EncryptedContent, request.Password))
-            return SecretErrors.InvalidSecretPassword(secret.Id);
-
-        var content = passwordEncryptor.Decrypt(secret.EncryptedContent, request.Password);
-        await secretRepository.DeleteSecretAsync(secret.Id);
+        var content = await secretService.RetrieveSecret(request.Id, request.Password);
+        if (content is null) return SecretErrors.SecretNotFound(request.Id);
 
         return new SecretContentDto(content);
-    }
-
-    private bool IsSecretExpired(Secret secret)
-    {
-        return secret.CreationDate.AddDays(1) < DateTime.UtcNow;
     }
 }

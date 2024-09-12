@@ -1,6 +1,6 @@
-namespace SecretShare.Application.Server.Encryption;
+namespace SecretShare.Domain.Encryption;
 
-public interface IPasswordEncryptor
+public interface IEncryptionService
 {
     string Encrypt(string value, string password);
     string Decrypt(string encryptedValue, string password);

@@ -2,7 +2,7 @@ using SecretShare.Application.Server.Encryption;
 
 namespace SecretShare.Infrastructure.Encryption;
 
-public class PasswordGenerator : IPasswordGenerator
+public class PasswordService : IPasswordService
 {
     public string GeneratePassword()
     {

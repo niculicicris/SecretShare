@@ -1,6 +1,6 @@
 namespace SecretShare.Application.Server.Encryption;
 
-public interface IPasswordGenerator
+public interface IPasswordService
 {
     string GeneratePassword();
 }

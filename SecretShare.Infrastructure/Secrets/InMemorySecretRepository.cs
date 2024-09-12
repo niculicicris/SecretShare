@@ -1,6 +1,7 @@
 using SecretShare.Domain.Secrets;
+using SecretShare.Domain.Secrets.Abstractions;
 
-namespace SecretShare.Infrastructure.Repositories;
+namespace SecretShare.Infrastructure.Secrets;
 
 public class InMemorySecretRepository : ISecretRepository
 {

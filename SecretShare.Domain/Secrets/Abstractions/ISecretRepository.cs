@@ -1,4 +1,4 @@
-namespace SecretShare.Domain.Secrets;
+namespace SecretShare.Domain.Secrets.Abstractions;
 
 public interface ISecretRepository
 {

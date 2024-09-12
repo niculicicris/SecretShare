@@ -4,22 +4,23 @@ namespace SecretShare.Application.Server.Common.Results;
 
 public class Result<TValue>
 {
-    private readonly Error? _error;
-    private readonly TValue? _value;
-
     private Result(TValue value)
     {
         IsSuccess = true;
-        _value = value;
-        _error = default;
+        Value = value;
+        Error = default;
     }
 
     private Result(Error error)
     {
         IsSuccess = false;
-        _value = default;
-        _error = error;
+        Value = default;
+        Error = error;
     }
+
+    public Error? Error { get; }
+
+    public TValue? Value { get; }
 
     public bool IsSuccess { get; }
 
@@ -37,6 +38,6 @@ public class Result<TValue>
 
     public TResult Match<TResult>(Func<TValue, TResult> success, Func<Error, TResult> failure)
     {
-        return IsSuccess ? success(_value!) : failure(_error!);
+        return IsSuccess ? success(Value!) : failure(Error!);
     }
 }
