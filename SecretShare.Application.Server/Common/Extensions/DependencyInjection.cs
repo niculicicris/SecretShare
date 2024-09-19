@@ -32,5 +32,6 @@ public static class DependencyInjection
     private static void AddServices(IServiceCollection services)
     {
         services.AddSingleton<ISecretService, SecretService>();
+        services.AddSingleton<ISecretExpirationService, SecretExpirationService>();
     }
 }
